@@ -1,0 +1,40 @@
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Context as BlogContext} from '../context/BlogContext'
+import { EvilIcons } from '@expo/vector-icons'
+
+const ShowScreen = ({ navigation }) =>{
+    const { state } = useContext(BlogContext);
+    
+    const blogPost = state.find((blogPost) => blogPost.id === navigation.getParam('id'))
+    return (
+        <View>
+            <Text>{ blogPost.title }</Text>
+            <Text>{ blogPost.content }</Text>
+        </View>
+    );
+}
+/**
+ * 
+ * navigationOptions:
+ * Each screen can configure various aspects about how it gets presented in parent navigators. You can configure
+ * Static configuration: Each navigation option can either be directly assigned:
+ * 
+ * navigationOptions은 title, header 등 관리해주는 것이다.
+ * directly 호출한다.
+ */
+ShowScreen.navigationOptions = ({ navigation }) => {
+    return {
+        headerRight: () => (
+          <TouchableOpacity onPress={() => 
+            navigation.navigate('Edit', { id: navigation.getParam('id') })
+          }>
+              <EvilIcons name="pencil" size={35} />
+          </TouchableOpacity>
+        ),
+     };
+};
+
+const styles = StyleSheet.create({});
+
+export default ShowScreen;
